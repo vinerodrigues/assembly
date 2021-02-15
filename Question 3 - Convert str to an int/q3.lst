@@ -1,0 +1,74 @@
+     1                                 %line 1+1 q3.asm
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 [section .data]
+     8                                 
+     9 00000000 343132373500           sstr1 db '41275',0
+    10 00000006 00000000               qaux dd 0
+    11 0000000A 00000000               qaux2 dd 0
+    12                                 
+    13                                 
+    14                                 
+    15                                 
+    16                                 EXIT_SUCCESS equ 0
+    17                                 SYS_exit equ 60
+    18                                 
+    19                                 
+    20                                 
+    21                                 
+    22                                 
+    23                                 [section .text]
+    24                                 
+    25                                 
+    26                                 [global _start]
+    27                                 _start:
+    28                                 
+    29                                 
+    30 00000000 48C7C300000000          mov rbx, 0
+    31 00000007 48C7C0[00000000]        mov rax, sstr1
+    32 0000000E 48C7C201000000          mov rdx, 1
+    33                                 looplen:
+    34 00000015 803C1800                cmp byte[rax +rbx*1], 0
+    35 00000019 7403                    je loopconvert
+    36 0000001B 48FFC3                  inc rbx
+    37 0000001E EBF3                    jmp looplen
+    38                                 
+    39                                 
+    40                                 loopconvert:
+    41 00000020 48FFCB                  dec rbx
+    42 00000023 4883FB00                cmp rbx, 0
+    43 00000027 7C1D                    jl converthexa
+    44 00000029 8A0C18                  mov cl, byte[rax+rbx*1]
+    45 0000002C 80E930                  sub cl, 48
+    46 0000002F 0FB6C9                  movzx ecx, cl
+    47                                 
+    48                                 
+    49                                 
+    50                                 
+    51                                 
+    52                                 
+    53 00000032 0FAFCA                  imul ecx, edx
+    54 00000035 6BD20A                  imul edx, 10
+    55                                 
+    56                                 
+    57                                 
+    58 00000038 030C25[00000000]        add ecx, dword[qaux]
+    59 0000003F 890C25[00000000]        mov dword[qaux], ecx
+    60                                 
+    61                                 
+    62                                 
+    63                                 
+    64 00000046 EBD6                    jmp loopconvert
+    65                                 
+    66                                 
+    67                                 converthexa:
+    68 00000048 8B0C25[00000000]        mov ecx, dword[qaux]
+    69                                 
+    70                                 
+    71                                 last:
+    72 0000004F 48C7C03C000000          mov rax, SYS_exit
+    73 00000056 48C7C700000000          mov rdi, EXIT_SUCCESS
+    74 0000005D 0F05                    syscall
