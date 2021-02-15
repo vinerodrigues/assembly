@@ -1,0 +1,5 @@
+------------------------------------ 
+display variables 
+
+"SE O RESULTADO FOR 0 NÃO É PALINDROMO, SE FOR 1 É PALINDROMO
+"$1 = 1
